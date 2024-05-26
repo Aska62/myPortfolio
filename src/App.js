@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className="w-full mt-12">
         <Outlet />
       </main>
       <ScrollRestoration />
