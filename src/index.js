@@ -7,14 +7,18 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
+  RouterProvider,
 } from 'react-router-dom';
 import Home from "./pages/Home";
+import Works from "./pages/Works";
+import Contact from "./pages/Contact";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
     <Route path="/" element={<App />} >
       <Route path="/" element={<Home />} />
+      <Route path="/works" element={<Works />} />
+      <Route path="/contact" element={<Contact />} />
     </Route>
   ])
 );

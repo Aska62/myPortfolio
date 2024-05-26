@@ -15,15 +15,19 @@ const Header = () => {
 
         {/* Menu for larger devices */}
         <div className="hidden md:flex align-top">
+          <Link
+            to={'/'}
+            className="text-sm h-12 px-3 w-28 font-semibold hover:text-wineRed"
+          >Home</Link>
           <div className="text-sm flex flex-col w-24">
             <p className="absolute top-0 h-12 py-3 hover:text-wineRed hover:cursor-pointer font-semibold" onClick={() => setWorksOpen(!worksOpen)}>Wroks</p>
-            <Link to={'#'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-300' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-300`}>DivLog</Link>
-            <Link to={'#'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-300' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-300`}>PhotoStory</Link>
+            <Link to={'/works'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-300' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-300`}>DivLog</Link>
+            <Link to={'/works'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-300' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-300`}>PhotoStory</Link>
           </div>
           <Link
-            to={'#'}
+            to={'/contact'}
             className="text-sm h-12 px-3 w-16 font-semibold hover:text-wineRed"
-          >About</Link>
+          >Contact</Link>
         </div>
       </nav>
 
@@ -37,20 +41,34 @@ const Header = () => {
         className={`bg-lightYellow h-screen fixed top-0 right-0 flex flex-col items-start ${hamburgerOpen ? ' w-2/3' : 'w-0'} duration-300 z-20`}
       >
         <div className="py-3 pl-6 mt-16 flex flex-col">
-          <p className="h-10">Wroks</p>
-            <Link
-            to={'#'}
+          <Link
+            to={'/'}
+            className="h-10 hover:text-wineRed"
+            onClick={() => setHamburgerOpen(false)}
+          >
+          Home</Link>
+          <Link
+            to={'/works'}
+            className="h-10 hover:text-wineRed"
+            onClick={() => setHamburgerOpen(false)}
+          >
+          Wroks</Link>
+          <Link
+            to={'/works'}
             className="px-3 h-10 hover:text-wineRed"
+            onClick={() => setHamburgerOpen(false)}
           >DivLog</Link>
           <Link
-            to={'#'}
+            to={'/works'}
             className="px-3 h-10 hover:text-wineRed"
+            onClick={() => setHamburgerOpen(false)}
           >PhotoStory</Link>
         </div>
         <Link
-          to={'#'}
+          to={'/contact'}
           className="h-12 pl-6 hover:text-wineRed"
-        >About</Link>
+          onClick={() => setHamburgerOpen(false)}
+        >Contact</Link>
       </div>
       {/* Menu opener for smaller devices */}
       <div
