@@ -14,6 +14,7 @@ module.exports = {
         lightYellow: 'rgb(252, 252, 207)',
         wineRed: 'rgb(153, 11, 20)',
         lightWineRed: 'rgb(191, 105, 111)',
+        softRed: 'rgb(224, 101, 112)',
         darkGray: 'rgb(105, 104, 104)',
         lightGray: 'rgb(194, 190, 190)',
       }
