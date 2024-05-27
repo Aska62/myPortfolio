@@ -36,11 +36,6 @@ const Header = () => {
               onClick={() => setWorksOpen(false)}
             >PhotoStory</Link>
           </div>
-          <Link
-            to={'/contact'}
-            className="text-sm h-12 px-3 w-16 font-semibold hover:text-wineRed"
-            onClick={() => setWorksOpen(false)}
-          >Contact</Link>
         </div>
       </nav>
 
@@ -80,11 +75,6 @@ const Header = () => {
             onClick={() => setHamburgerOpen(false)}
           >PhotoStory</Link>
         </div>
-        <Link
-          to={'/contact'}
-          className="h-12 pl-6 hover:text-wineRed"
-          onClick={() => setHamburgerOpen(false)}
-        >Contact</Link>
       </div>
       {/* Menu opener for smaller devices */}
       <div
