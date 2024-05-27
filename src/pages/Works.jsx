@@ -1,33 +1,58 @@
-import { FaGithub } from "react-icons/fa";
-import SkillCard from "../components/SkillCard";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { db } from '../firebase.config';
+import { collection, getDocs, query } from 'firebase/firestore';
+import WorkSection from "../components/WorkSection";
 
 const Works = () => {
-  const divLogSkills = [
-    'React',
-    'Node.js',
-    'Express',
-    'MongoDB'
-  ]
+  const state = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [works, setWorks] = useState([]);
+
+  useEffect(() => {
+    if (works.length === 0) {
+      fetchWorksData();
+    }
+  }, [works]);
+
+  const fetchWorksData = async () => {
+    const worksRef = collection(db, 'works');
+    setLoading(true);
+    try {
+      // Get all works
+      let q = query(worksRef)
+      const querySnap = await getDocs(q);
+
+      if (!querySnap.empty) {
+        let fetchedData = [];
+
+        querySnap.forEach((doc) => {
+          fetchedData.push({
+            id: doc.id,
+            name: doc.data().name,
+            gitHubRepo: doc.data().gitHubRepo,
+            description: doc.data().description,
+            skills: doc.data().skills
+          });
+        });
+
+        setWorks(fetchedData);
+      } else {
+        console.log('No works found')
+      }
+    } catch(err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="w-full min-h-dvh mb-12">
       <h1 className="m-6 mt-16">Works</h1>
-      <section className="w-11/12 mx-auto">
-        <div className="flex items-center">
-          <h2 className="text-2xl">DivLog</h2>
-          <a href="https://github.com/Aska62/DivLog" target="_blank" rel="noopener noreferrer" className="pl-2 text-2lg hover:text-wineRed"><FaGithub /></a>
-        </div>
-        <div className="flex my-3">
-          {divLogSkills.map((skill, index) => (
-            <SkillCard skill={skill} key={index} />
-          ) )}
-        </div>
-        <p className=''>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-        <div className="mt-6">
-          <div className="bg-lightGray w-full h-80"></div>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-        </div>
-      </section>
+      {loading ? <p>Loading...</p> : <>
+        {works.length > 0 && works.map((work, index) => (<WorkSection work={work} position={state.state.title} key={index} />))}
+      </>}
     </div>
   )
 }

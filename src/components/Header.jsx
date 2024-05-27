@@ -11,6 +11,7 @@ const Header = () => {
         <Link
           to={'/'}
           className="font-semibold px-0 hover:text-wineRed"
+          onClick={() => setWorksOpen(false)}
         >My Portfolio</Link>
 
         {/* Menu for larger devices */}
@@ -18,15 +19,27 @@ const Header = () => {
           <Link
             to={'/'}
             className="text-sm h-12 px-3 w-28 font-semibold hover:text-wineRed"
+            onClick={() => setWorksOpen(false)}
           >Home</Link>
           <div className="text-sm flex flex-col w-24">
             <p className="absolute top-0 h-12 py-3 hover:text-wineRed hover:cursor-pointer font-semibold" onClick={() => setWorksOpen(!worksOpen)}>Wroks</p>
-            <Link to={'/works'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-300' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-300`}>DivLog</Link>
-            <Link to={'/works'} className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-300' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-300`}>PhotoStory</Link>
+            <Link
+              to={'/works'}
+              state={{ title: "DivLog" }}
+              className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-300' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-300`}
+              onClick={() => setWorksOpen(false)}
+            >DivLog</Link>
+            <Link
+              to={'/works'}
+              state={{ title: "PhotoStory" }}
+              className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-300' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-300`}
+              onClick={() => setWorksOpen(false)}
+            >PhotoStory</Link>
           </div>
           <Link
             to={'/contact'}
             className="text-sm h-12 px-3 w-16 font-semibold hover:text-wineRed"
+            onClick={() => setWorksOpen(false)}
           >Contact</Link>
         </div>
       </nav>
@@ -49,17 +62,20 @@ const Header = () => {
           Home</Link>
           <Link
             to={'/works'}
+            state={{ title: "" }}
             className="h-10 hover:text-wineRed"
             onClick={() => setHamburgerOpen(false)}
           >
           Wroks</Link>
           <Link
             to={'/works'}
+            state={{ title: "DivLog" }}
             className="px-3 h-10 hover:text-wineRed"
             onClick={() => setHamburgerOpen(false)}
           >DivLog</Link>
           <Link
             to={'/works'}
+            state={{ title: "PhotoStory" }}
             className="px-3 h-10 hover:text-wineRed"
             onClick={() => setHamburgerOpen(false)}
           >PhotoStory</Link>
