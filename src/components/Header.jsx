@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 flex justify-between items-top w-screen ${worksOpen ? 'h-28' : 'h-12'} duration-150 m-0 py-3 px-5 bg-brightYellow shadow-md`}>
+      <nav className={`fixed top-0 flex justify-between items-top w-screen z-20 ${worksOpen ? 'h-28' : 'h-12'} duration-150 m-0 py-3 px-5 bg-brightYellow shadow-md`}>
         <Link
           to={'/'}
           className="font-semibold px-0 hover:text-wineRed"

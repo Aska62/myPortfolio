@@ -47,13 +47,12 @@ const WorkSection = ({ work, position}) => {
               description: imgDoc.data().description
             }];
             setImageData(fetchedImageData);
+            setImageCount(fetchedImageData.length);
           })
           .catch(err => {
             console.log(err)
           })
       });
-
-      setImageCount(fetchedImageData.length);
     }
   }
 
@@ -94,7 +93,7 @@ const WorkSection = ({ work, position}) => {
             ) )}
           </div>
           <p className=''>{work.description}</p>
-          <div className="mt-6 w-5/7 mx-auto flex flex-wrap relative">
+          <div className="mt-6 w-5/7 mx-auto flex flex-wrap relative z-10">
             {imageData.length > 0 &&
               <>
                 <div className="w-full my-10 mx-8">
