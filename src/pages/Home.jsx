@@ -14,7 +14,10 @@ const Home = () => {
       <div className="w-64 md:w-80 lg:w-96 mt-6 lg:mt-0 flex flex-col lg:mx-6">
         <h1 className="font-bold text-xl">Aska Takahashi</h1>
         <h2 className="font-semibold text-lg">Web Application Developer</h2>
-        <p className='mt-3'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+        <p className='mt-3'>A developer with experience of building web applications.<br/>
+          who loves to code in React and Node.js.<br/>
+          Never stopped learning new skills.
+        </p>
         <div className='w-full flex flex-wrap mt-3'>
           {skills.map((skill, index) => (
             <SkillCard skill={skill} key={index} />

@@ -17,28 +17,25 @@ const Works = () => {
 
   const fetchWorksData = async () => {
     const worksRef = collection(db, 'works');
-    setLoading(true);
+
     try {
       // Get all works
-      let q = query(worksRef)
-      const querySnap = await getDocs(q);
+      const workQ = query(worksRef);
+      const querySnap = await getDocs(workQ);
 
       if (!querySnap.empty) {
         let fetchedData = [];
-
-        querySnap.forEach((doc) => {
+        querySnap.forEach(async(doc) => {
           fetchedData.push({
             id: doc.id,
             name: doc.data().name,
             gitHubRepo: doc.data().gitHubRepo,
             description: doc.data().description,
             skills: doc.data().skills,
-            images: doc.data().images,
-            imageDesc: doc.data().imageDesc
           });
-        });
 
-        setWorks(fetchedData);
+          setWorks(fetchedData);
+        });
       } else {
         console.log('No works found')
       }
