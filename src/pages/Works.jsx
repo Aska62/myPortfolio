@@ -12,7 +12,7 @@ const Works = () => {
   useEffect(() => {
     if (works.length === 0) {
       fetchWorksData();
-    }
+      }
   }, [works]);
 
   const fetchWorksData = async () => {
@@ -32,7 +32,9 @@ const Works = () => {
             name: doc.data().name,
             gitHubRepo: doc.data().gitHubRepo,
             description: doc.data().description,
-            skills: doc.data().skills
+            skills: doc.data().skills,
+            images: doc.data().images,
+            imageDesc: doc.data().imageDesc
           });
         });
 
