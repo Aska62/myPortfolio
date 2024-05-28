@@ -8,5 +8,6 @@ export const skills = [
   'Express',
   'PHP',
   'MongoDB',
+  'Firebase',
   'MySQL'
 ]
