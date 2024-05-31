@@ -80,14 +80,14 @@ const WorkSection = ({ work, position}) => {
   }
 
   return (
-    <section className="w-11/12 mx-auto mb-24 h-screen" id={work.name} ref={secRef}>
+    <section className="w-11/12 mx-auto mt-0 sm:mt-10 mb-0 h-screen" id={work.name} ref={secRef}>
       {loading ? <p>Loading...</p> :
         <>
           <div className="flex items-center">
             <h2 className="text-2xl">{work.name}</h2>
             <a href={`${process.env.REACT_APP_GITHUB_URL}/${work.gitHubRepo}`} target="_blank" rel="noopener noreferrer" className="pl-2 text-2lg hover:text-wineRed"><FaGithub /></a>
           </div>
-          <div className="flex my-3">
+          <div className="flex my-3 flex-wrap">
             {work.skills.map((skill, index) => (
               <SkillCard skill={skill} key={index} />
             ) )}
