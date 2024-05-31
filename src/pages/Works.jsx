@@ -27,11 +27,12 @@ const Works = () => {
         let fetchedData = [];
         querySnap.forEach(async(doc) => {
           fetchedData.push({
-            id: doc.id,
-            name: doc.data().name,
-            gitHubRepo: doc.data().gitHubRepo,
+            id         : doc.id,
+            name       : doc.data().name,
+            gitHubRepo : doc.data().gitHubRepo,
+            extLink    : doc.data().extLink,
             description: doc.data().description,
-            skills: doc.data().skills,
+            skills     : doc.data().skills,
           });
 
           setWorks(fetchedData);

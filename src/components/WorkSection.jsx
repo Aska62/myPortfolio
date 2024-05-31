@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { db, storage } from '../firebase.config';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SkillCard from "./SkillCard";
 
@@ -19,7 +19,6 @@ const WorkSection = ({ work, position}) => {
     if (imageData.length === 0) {
       getImages();
     }
-
     setLoading(false);
   }, [work, imageData]);
 
@@ -80,12 +79,17 @@ const WorkSection = ({ work, position}) => {
   }
 
   return (
-    <section className="w-11/12 mx-auto mt-0 sm:mt-10 mb-0 h-screen" id={work.name} ref={secRef}>
+    <section className="w-11/12 mx-auto pt-20 h-screen" id={work.name} ref={secRef}>
       {loading ? <p>Loading...</p> :
         <>
           <div className="flex items-center">
-            <h2 className="text-2xl">{work.name}</h2>
-            <a href={`${process.env.REACT_APP_GITHUB_URL}/${work.gitHubRepo}`} target="_blank" rel="noopener noreferrer" className="pl-2 text-2lg hover:text-wineRed"><FaGithub /></a>
+            <h2 className="text-2xl font-semibold">{work.name}</h2>
+            <a href={`${process.env.REACT_APP_GITHUB_URL}/${work.gitHubRepo}`} target="_blank" rel="noopener noreferrer" className="pl-2 text-xl hover:text-wineRed"><FaGithub /></a>
+            {work.extLink &&
+              <a href={work.extLink} target="_blank" rel="noopener noreferrer" className="pl-2 text-lg ml-1 hover:text-wineRed" >
+                <FaExternalLinkAlt />
+              </a>
+            }
           </div>
           <div className="flex my-3 flex-wrap">
             {work.skills.map((skill, index) => (
