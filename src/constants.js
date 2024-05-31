@@ -3,11 +3,12 @@ export const skills = [
   'JavaScript',
   'HTML',
   'CSS',
-  'tailwindcss',
+  'Tailwind CSS',
   'Node.js',
   'Express',
   'PHP',
   'MongoDB',
   'Firebase',
-  'MySQL'
+  'MySQL',
+  'Figma'
 ]

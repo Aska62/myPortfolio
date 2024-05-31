@@ -61,13 +61,13 @@ const WorkSection = ({ work, position}) => {
   }, [secRef]);
 
   useEffect(() => {
-    if (sectionTop > 0 && (work.name === position)) {
+    if ((imageData.length > 0) && (sectionTop > 0) && (work.name === position)) {
       window.scrollTo({
-        top: sectionTop,
+        top: secRef.current.offsetTop,
         behavior: "smooth"
       });
     }
-  }, [sectionTop, work, position]);
+  }, [sectionTop, work, position, imageData]);
 
   const switchImageBack = () => {
     const nextImage = (visibleImage === 0) ? imageCount - 1 : visibleImage - 1;
@@ -80,7 +80,7 @@ const WorkSection = ({ work, position}) => {
   }
 
   return (
-    <section className="w-11/12 mx-auto mb-12 pt-12 h-fit" id={work.name} ref={secRef}>
+    <section className="w-11/12 mx-auto mb-24 h-screen" id={work.name} ref={secRef}>
       {loading ? <p>Loading...</p> :
         <>
           <div className="flex items-center">
@@ -93,17 +93,17 @@ const WorkSection = ({ work, position}) => {
             ) )}
           </div>
           <p className=''>{work.description}</p>
-          <div className="mt-6 w-5/7 mx-auto flex flex-wrap relative z-10">
+          <div className="mt-6 w-5/7 mx-auto flex flex-wrap z-10">
             {imageData.length > 0 &&
               <>
-                <div className="w-full my-10 mx-8">
-                  <img src={imageData[visibleImage].imageUrl} className="bg-lightGray w-full" />
-                  <p className="w-5/7 text-wrap">{imageData[visibleImage].description}</p>
+                <div className="w-full my-0 mx-8 relative">
+                  <img src={imageData[visibleImage].imageUrl} className="bg-lightGray h-fit md:w-11/12 mx-auto" />
+                  <div className="w-full h-full p-0 m-0 absolute top-0 left-0 flex">
+                    <div className="w-1/2 h-full flex items-center justify-start text-3xl m-0 md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageBack}><IoIosArrowBack /></div>
+                    <div className="w-1/2 h-full flex items-center justify-end text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageNext}><IoIosArrowForward /></div>
+                  </div>
                 </div>
-                <div className="w-full h-full absolute top-0 left-0 flex">
-                  <div className="w-1/2 h-full flex items-center justify-start text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageBack}><IoIosArrowBack /></div>
-                  <div className="w-1/2 h-full flex items-center justify-end text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageNext}><IoIosArrowForward /></div>
-                </div>
+                <p className="w-5/7 text-wrap">{imageData[visibleImage].description}</p>
               </>
             }
           </div>

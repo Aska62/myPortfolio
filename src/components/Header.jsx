@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Header = () => {
   const [worksOpen, setWorksOpen] = useState(false);
+  const [mbWorksOpen, setMbWorksOpen] = useState(false);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   return (
@@ -16,23 +18,33 @@ const Header = () => {
 
         {/* Menu for larger devices */}
         <div className="hidden md:flex align-top">
-          <Link
-            to={'/'}
-            className="text-sm h-12 px-3 w-28 font-semibold hover:text-wineRed"
-            onClick={() => setWorksOpen(false)}
-          >Home</Link>
           <div className="text-sm flex flex-col w-24">
-            <p className="absolute top-0 h-12 py-3 hover:text-wineRed hover:cursor-pointer font-semibold" onClick={() => setWorksOpen(!worksOpen)}>Wroks</p>
+            <Link
+              to={'/'}
+              className="mt-px h-12 px-3 w-28 font-semibold hover:text-wineRed"
+              onClick={() => setWorksOpen(false)}
+            >
+              <p className="mr-2">Home</p>
+            </Link>
+          </div>
+          <div className="text-sm flex flex-col w-24">
+            <div
+              className="absolute top-0 h-12 py-3 hover:text-wineRed hover:cursor-pointer font-semibold flex items-center duration-150"
+              onClick={() => setWorksOpen(!worksOpen)}
+            >
+              <p className="mr-2">Wroks</p>
+              <IoIosArrowDown className={`${worksOpen ? 'rotate-180' : ''} duration-150`} />
+            </div>
             <Link
               to={'/works'}
               state={{ title: "DivLog" }}
-              className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-300' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-300`}
+              className={`bg-brightYellow w-24 ${worksOpen ? 'py-3 block absolute top-8 duration-150' : 'hidden h-0 py-0'} hover:text-wineRed hover:cursor-pointer duration-150`}
               onClick={() => setWorksOpen(false)}
             >DivLog</Link>
             <Link
               to={'/works'}
               state={{ title: "PhotoStory" }}
-              className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-300' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-300`}
+              className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-150' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-150`}
               onClick={() => setWorksOpen(false)}
             >PhotoStory</Link>
           </div>
@@ -41,37 +53,47 @@ const Header = () => {
 
       {/* Menu for smaller devices */}
       <div
-        className={`bg-lightGray opacity-80 h-screen w-screen ${hamburgerOpen ? 'fixed' : 'hidden'} top-0 left-0 duration-300 z-10`}
+        className={`bg-lightGray opacity-80 h-screen w-screen ${hamburgerOpen ? 'fixed' : 'hidden'} top-0 left-0 duration-150 z-10`}
         onClick={() => setHamburgerOpen(false)}
       >
       </div>
       <div
-        className={`bg-lightYellow h-screen fixed top-0 right-0 flex flex-col items-start ${hamburgerOpen ? ' w-2/3' : 'w-0'} duration-300 z-20`}
+        className={`bg-lightYellow h-screen fixed top-0 right-0 flex flex-col items-start ${hamburgerOpen ? ' w-2/3' : 'w-0'} duration-150 z-20`}
       >
         <div className="py-3 pl-6 mt-16 flex flex-col">
+        <div >
           <Link
             to={'/'}
-            className="h-10 hover:text-wineRed"
+            className="h-10 hover:text-wineRed flex items-center"
             onClick={() => setHamburgerOpen(false)}
           >
-          Home</Link>
+            <p className="h-10 mr-2">Home</p>
+          </Link>
+        </div>
+          <div
+            state={{ title: "" }}
+            className=" hover:text-wineRed hover:cursor-pointer duration-150 flex items-center mb-2"
+            onClick={() => setMbWorksOpen(!mbWorksOpen)}
+          >
+            <p className="h-10 leading-10 mr-2">Wroks</p>
+            <IoIosArrowDown className={`${mbWorksOpen ? 'rotate-180' : ''} duration-150`} />
+          </div>
           <Link
             to={'/works'}
             state={{ title: "" }}
-            className="h-10 hover:text-wineRed"
+            className={`px-3 h-10 hover:text-wineRed ${mbWorksOpen ? 'block' : 'hidden'} duration-150`}
             onClick={() => setHamburgerOpen(false)}
-          >
-          Wroks</Link>
+          >Works Top</Link>
           <Link
             to={'/works'}
             state={{ title: "DivLog" }}
-            className="px-3 h-10 hover:text-wineRed"
+            className={`px-3 h-10 hover:text-wineRed ${mbWorksOpen ? 'block' : 'hidden'} duration-150`}
             onClick={() => setHamburgerOpen(false)}
           >DivLog</Link>
           <Link
             to={'/works'}
             state={{ title: "PhotoStory" }}
-            className="px-3 h-10 hover:text-wineRed"
+            className={`px-3 h-10 hover:text-wineRed ${mbWorksOpen ? 'block' : 'hidden'} duration-150`}
             onClick={() => setHamburgerOpen(false)}
           >PhotoStory</Link>
         </div>
