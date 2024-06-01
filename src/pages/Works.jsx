@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from '../firebase.config';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import WorkSection from "../components/WorkSection";
 
 const Works = () => {
@@ -20,7 +20,8 @@ const Works = () => {
 
     try {
       // Get all works
-      const workQ = query(worksRef);
+      const workQ = query(worksRef,  orderBy('order', 'asc'));
+
       const querySnap = await getDocs(workQ);
 
       if (!querySnap.empty) {

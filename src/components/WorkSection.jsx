@@ -29,7 +29,7 @@ const WorkSection = ({ work, position}) => {
     const imageDataQ = query(
       imageDataRef,
       where('workRef', '==', work.id),
-      orderBy('imageTitle', 'asc')
+      orderBy('order', 'asc')
     );
 
     const imageQuerySnap = await getDocs(imageDataQ);
@@ -37,7 +37,8 @@ const WorkSection = ({ work, position}) => {
     if (!imageQuerySnap.empty) {
       let fetchedImageData = [];
       imageQuerySnap.forEach((imgDoc) => {
-        const imageRef = ref(storage, `${imgDoc.data().imageTitle}.png`);
+        const extension = imgDoc.data().isGif ? 'gif' : 'png';
+        const imageRef = ref(storage, `${imgDoc.data().imageTitle}.${extension}`);
 
         getDownloadURL(imageRef)
           .then((url) => {
@@ -79,7 +80,7 @@ const WorkSection = ({ work, position}) => {
   }
 
   return (
-    <section className="w-11/12 mx-auto pt-20 h-screen" id={work.name} ref={secRef}>
+    <section className="w-11/12 sm:w-6/12 min-h-screen sm:min-h-96 mx-auto pt-20 pb-10" id={work.name} ref={secRef}>
       {loading ? <p>Loading...</p> :
         <>
           <div className="flex items-center">
@@ -97,14 +98,14 @@ const WorkSection = ({ work, position}) => {
             ) )}
           </div>
           <p className=''>{work.description}</p>
-          <div className="mt-6 w-5/7 mx-auto flex flex-wrap z-10">
+          <div className="w-full mx-auto mt-6 mb-0 flex flex-wrap z-10">
             {imageData.length > 0 &&
               <>
                 <div className="w-full my-0 mx-8 relative">
-                  <img src={imageData[visibleImage].imageUrl} className="bg-lightGray h-fit md:w-11/12 mx-auto" />
+                  <img src={imageData[visibleImage].imageUrl} className="w-full md:w-11/12 mx-auto" />
                   <div className="w-full h-full p-0 m-0 absolute top-0 left-0 flex">
-                    <div className="w-1/2 h-full flex items-center justify-start text-3xl m-0 md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageBack}><IoIosArrowBack /></div>
-                    <div className="w-1/2 h-full flex items-center justify-end text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageNext}><IoIosArrowForward /></div>
+                    <div className="w-1/2 h-full flex items-center justify-start text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageBack}><IoIosArrowBack className="-ml-8 md:-ml-12" /></div>
+                    <div className="w-1/2 h-full flex items-center justify-end text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageNext}><IoIosArrowForward className="-mr-8 md:-ml-12" /></div>
                   </div>
                 </div>
                 <p className="w-5/7 text-wrap">{imageData[visibleImage].description}</p>

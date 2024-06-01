@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 flex justify-between items-top w-screen z-20 ${worksOpen ? 'h-28' : 'h-12'} duration-150 m-0 py-3 px-5 bg-brightYellow shadow-md`}>
+      <nav className={`fixed top-0 flex justify-between items-top w-screen z-20 h-12 ${worksOpen ? 'md:h-36' : 'md:h-12'} duration-75 m-0 py-3 px-5 bg-brightYellow shadow-md`}>
         <Link
           to={'/'}
           className="font-semibold px-0 hover:text-wineRed"
@@ -47,6 +47,12 @@ const Header = () => {
               className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-20 duration-150' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-150`}
               onClick={() => setWorksOpen(false)}
             >PhotoStory</Link>
+            <Link
+              to={'/works'}
+              state={{ title: "Brewtech Supports" }}
+              className={`bg-brightYellow w-24 ${worksOpen ? 'py-0 block absolute top-28 duration-500' : 'hidden h-0 py-0 '} hover:text-wineRed hover:cursor-pointer duration-150`}
+              onClick={() => setWorksOpen(false)}
+            >Brewtech</Link>
           </div>
         </div>
       </nav>
@@ -96,6 +102,12 @@ const Header = () => {
             className={`px-3 h-10 hover:text-wineRed ${mbWorksOpen ? 'block' : 'hidden'} duration-150`}
             onClick={() => setHamburgerOpen(false)}
           >PhotoStory</Link>
+          <Link
+            to={'/works'}
+            state={{ title: "Brewtech Supports" }}
+            className={`px-3 h-10 hover:text-wineRed ${mbWorksOpen ? 'block' : 'hidden'} duration-150`}
+            onClick={() => setHamburgerOpen(false)}
+          >Brewtech Supports</Link>
         </div>
       </div>
       {/* Menu opener for smaller devices */}
