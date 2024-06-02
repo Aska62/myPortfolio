@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { db, storage } from '../firebase.config';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, getDoc, orderBy, query, where } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -12,6 +12,7 @@ const WorkSection = ({ work, position}) => {
   const [loading, setLoading] = useState(true);
   const [sectionTop, setSectionTop] = useState(0);
   const [imageData, setImageData] = useState([]);
+  const [mainImageData, setMainImageData] = useState({});
   const [imageCount, setImageCount] = useState(0);
   const [visibleImage, setVisibleImage] = useState(0);
 
@@ -21,40 +22,6 @@ const WorkSection = ({ work, position}) => {
     }
     setLoading(false);
   }, [work, imageData]);
-
-  const getImages = async () => {
-    setLoading(true);
-    // Get images
-    const imageDataRef = collection(db, 'imageData');
-    const imageDataQ = query(
-      imageDataRef,
-      where('workRef', '==', work.id),
-      orderBy('order', 'asc')
-    );
-
-    const imageQuerySnap = await getDocs(imageDataQ);
-
-    if (!imageQuerySnap.empty) {
-      let fetchedImageData = [];
-      imageQuerySnap.forEach((imgDoc) => {
-        const extension = imgDoc.data().isGif ? 'gif' : 'png';
-        const imageRef = ref(storage, `${imgDoc.data().imageTitle}.${extension}`);
-
-        getDownloadURL(imageRef)
-          .then((url) => {
-            fetchedImageData = [...fetchedImageData, {
-              imageUrl: url,
-              description: imgDoc.data().description
-            }];
-            setImageData(fetchedImageData);
-            setImageCount(fetchedImageData.length);
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      });
-    }
-  }
 
   useEffect(() => {
     setSectionTop(secRef.current.offsetTop);
@@ -68,6 +35,58 @@ const WorkSection = ({ work, position}) => {
       });
     }
   }, [sectionTop, work, position, imageData]);
+
+  const getImages = async () => {
+    setLoading(true);
+    // Get images
+    const imageDataRef = collection(db, `imageData_${process.env.REACT_APP_WORK_ENV}`);
+    const imageDataQ = query(
+      imageDataRef,
+      where('workRef', '==', work.id),
+      orderBy('order', 'asc')
+    );
+
+    const imageQuerySnap = await getDocs(imageDataQ);
+
+    if (!imageQuerySnap.empty) {
+      // Paths for images
+      const baseMainImgPath = `${process.env.REACT_APP_WORK_ENV}/main`;
+      const baseImgPath = `${process.env.REACT_APP_WORK_ENV}/slides`;
+
+      let fetchedImageData = [];
+
+      imageQuerySnap.forEach((imgDoc) => {
+        // Complete image path by adding name
+        const imagePath = (imgDoc.data().isMain) ?
+          `${baseMainImgPath}/${work.imgName}.${imgDoc.data().extension}` :
+          `${baseImgPath}/${work.imgName}_${imgDoc.data().order}.${imgDoc.data().extension}`;
+
+        // Prepare reference to get URL
+        const imageRef = ref(storage, imagePath);
+
+        getDownloadURL(imageRef)
+          .then((url) => {
+            // Prepare data to set
+            const data = {
+              imageUrl: url,
+              description: imgDoc.data().description
+            }
+
+            // Set the data
+            if (imgDoc.data().isMain) {
+              setMainImageData(data);
+            } else {
+              fetchedImageData = [...fetchedImageData, data];
+              setImageData(fetchedImageData);
+              setImageCount(fetchedImageData.length);
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      });
+    }
+  }
 
   const switchImageBack = () => {
     const nextImage = (visibleImage === 0) ? imageCount - 1 : visibleImage - 1;
@@ -97,7 +116,8 @@ const WorkSection = ({ work, position}) => {
               <SkillCard skill={skill} key={index} />
             ) )}
           </div>
-          <p className=''>{work.description}</p>
+          <img src={mainImageData.imageUrl} className="w-11/12 md:w-full h-fit my-8" />
+          <p className=''>{work.description}{mainImageData.url}</p>
           <div className="w-full mx-auto mt-6 mb-0 flex flex-wrap z-10">
             {imageData.length > 0 &&
               <>

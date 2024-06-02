@@ -16,7 +16,7 @@ const Works = () => {
   }, [works]);
 
   const fetchWorksData = async () => {
-    const worksRef = collection(db, 'works');
+    const worksRef = collection(db, `works_${process.env.REACT_APP_WORK_ENV}`);
 
     try {
       // Get all works
@@ -30,6 +30,7 @@ const Works = () => {
           fetchedData.push({
             id         : doc.id,
             name       : doc.data().name,
+            imgName    : doc.data().imgName,
             gitHubRepo : doc.data().gitHubRepo,
             extLink    : doc.data().extLink,
             description: doc.data().description,
