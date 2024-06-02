@@ -1,9 +1,9 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { db, storage } from '../firebase.config';
-import { collection, getDocs, getDoc, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { ref, getDownloadURL } from "firebase/storage";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import ImageViewer from "react-simple-image-viewer";
 import SkillCard from "./SkillCard";
 
 const WorkSection = ({ work, position}) => {
@@ -11,30 +11,30 @@ const WorkSection = ({ work, position}) => {
 
   const [loading, setLoading] = useState(true);
   const [sectionTop, setSectionTop] = useState(0);
-  const [imageData, setImageData] = useState([]);
-  const [mainImageData, setMainImageData] = useState({});
-  const [imageCount, setImageCount] = useState(0);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [mainImageData, setMainImageData] = useState('');
   const [visibleImage, setVisibleImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   useEffect(() => {
-    if (imageData.length === 0) {
+    if (imageUrls.length === 0) {
       getImages();
     }
     setLoading(false);
-  }, [work, imageData]);
+  }, [work, imageUrls]);
 
   useEffect(() => {
     setSectionTop(secRef.current.offsetTop);
   }, [secRef]);
 
   useEffect(() => {
-    if ((imageData.length > 0) && (sectionTop > 0) && (work.name === position)) {
+    if ((imageUrls.length > 0) && (sectionTop > 0) && (work.name === position)) {
       window.scrollTo({
         top: secRef.current.offsetTop,
         behavior: "smooth"
       });
     }
-  }, [sectionTop, work, position, imageData]);
+  }, [sectionTop, work, position, imageUrls]);
 
   const getImages = async () => {
     setLoading(true);
@@ -53,8 +53,6 @@ const WorkSection = ({ work, position}) => {
       const baseMainImgPath = `${process.env.REACT_APP_WORK_ENV}/main`;
       const baseImgPath = `${process.env.REACT_APP_WORK_ENV}/slides`;
 
-      let fetchedImageData = [];
-
       imageQuerySnap.forEach((imgDoc) => {
         // Complete image path by adding name
         const imagePath = (imgDoc.data().isMain) ?
@@ -66,37 +64,33 @@ const WorkSection = ({ work, position}) => {
 
         getDownloadURL(imageRef)
           .then((url) => {
-            // Prepare data to set
-            const data = {
-              imageUrl: url,
-              description: imgDoc.data().description
-            }
+            // Set data
+            setImageUrls((prevState) => ([
+              ...prevState,
+              url
+            ]));
 
-            // Set the data
+            // If the URL is for main image of the work, set as main image data
             if (imgDoc.data().isMain) {
-              setMainImageData(data);
-            } else {
-              fetchedImageData = [...fetchedImageData, data];
-              setImageData(fetchedImageData);
-              setImageCount(fetchedImageData.length);
+              setMainImageData(url);
             }
           })
           .catch(err => {
             console.log(err)
-          })
+          });
       });
     }
   }
 
-  const switchImageBack = () => {
-    const nextImage = (visibleImage === 0) ? imageCount - 1 : visibleImage - 1;
-    setVisibleImage(nextImage);
-  }
+  const openImageViewer = useCallback((index) => {
+    setVisibleImage(index);
+    setIsViewerOpen(true);
+  }, []);
 
-  const switchImageNext = () => {
-    const nextImage = (visibleImage === (imageCount - 1)) ? 0 : visibleImage + 1;
-    setVisibleImage(nextImage);
-  }
+  const closeImageViewer = () => {
+    setVisibleImage(0);
+    setIsViewerOpen(false);
+  };
 
   return (
     <section className="w-11/12 sm:w-6/12 min-h-screen sm:min-h-96 mx-auto pt-20 pb-10" id={work.name} ref={secRef}>
@@ -116,19 +110,27 @@ const WorkSection = ({ work, position}) => {
               <SkillCard skill={skill} key={index} />
             ) )}
           </div>
-          <img src={mainImageData.imageUrl} className="w-11/12 md:w-full h-fit my-8" />
-          <p className=''>{work.description}{mainImageData.url}</p>
+          <img
+            src={mainImageData}
+            className="w-11/12 sm:w-full h-fit my-8 hover:cursor-pointer hover:opacity-80 duration-300"
+            onClick={() => openImageViewer(visibleImage)}
+          />
+          <p className=''>{work.description}</p>
           <div className="w-full mx-auto mt-6 mb-0 flex flex-wrap z-10">
-            {imageData.length > 0 &&
+            {imageUrls.length > 0 &&
               <>
-                <div className="w-full my-0 mx-8 relative">
-                  <img src={imageData[visibleImage].imageUrl} className="w-full md:w-11/12 mx-auto" />
-                  <div className="w-full h-full p-0 m-0 absolute top-0 left-0 flex">
-                    <div className="w-1/2 h-full flex items-center justify-start text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageBack}><IoIosArrowBack className="-ml-8 md:-ml-12" /></div>
-                    <div className="w-1/2 h-full flex items-center justify-end text-3xl md:text-7xl opacity-55 hover:opacity-80" onClick={switchImageNext}><IoIosArrowForward className="-mr-8 md:-ml-12" /></div>
-                  </div>
-                </div>
-                <p className="w-5/7 text-wrap">{imageData[visibleImage].description}</p>
+                {isViewerOpen && (
+                  <ImageViewer
+                    src={imageUrls}
+                    currentIndex={visibleImage}
+                    onClose={closeImageViewer}
+                    disableScroll={false}
+                    backgroundStyle={{
+                      backgroundColor: "rgba(0,0,0,0.9)"
+                    }}
+                    closeOnClickOutside={true}
+                  />
+                )}
               </>
             }
           </div>
