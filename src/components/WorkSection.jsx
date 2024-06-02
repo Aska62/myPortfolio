@@ -50,14 +50,11 @@ const WorkSection = ({ work, position}) => {
 
     if (!imageQuerySnap.empty) {
       // Paths for images
-      const baseMainImgPath = `${process.env.REACT_APP_WORK_ENV}/main`;
       const baseImgPath = `${process.env.REACT_APP_WORK_ENV}/slides`;
 
       imageQuerySnap.forEach((imgDoc) => {
         // Complete image path by adding name
-        const imagePath = (imgDoc.data().isMain) ?
-          `${baseMainImgPath}/${work.imgName}.${imgDoc.data().extension}` :
-          `${baseImgPath}/${work.imgName}_${imgDoc.data().order}.${imgDoc.data().extension}`;
+        const imagePath = `${baseImgPath}/${work.imgName}_${imgDoc.data().order}.${imgDoc.data().extension}`;
 
         // Prepare reference to get URL
         const imageRef = ref(storage, imagePath);
